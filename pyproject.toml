@@ -8,6 +8,7 @@ packages = [{ include = "pysi", from = "src" }]
 
 [tool.poetry.scripts]
 pysi = "pysi.console.cli:cli"
+pysi-viewer = "pysi.viewer.cli:main"
 
 [tool.poetry.dependencies]
 python = ">=3.10"
@@ -16,11 +17,12 @@ aenum = ">=3.1.11,<3.2.0"
 astropy = "~6.1.7"
 click = ">=8.1.3,<8.2.0"
 dust-extinction = ">=1.1,<2.0"
-matplotlib = "3.9.0"
+matplotlib = ">=3.9.0"
 numba = "^0.61.0rc1"
 numpy = "~1.26.4"
 psutil = ">=5.9.4,<5.10.0"
 pandas = "^2.2.3"
+bokeh = ">=3.8.2"
 
 [tool.poetry.group.dev.dependencies]
 ipython = "~8.16.1"

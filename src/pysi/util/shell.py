@@ -48,14 +48,14 @@ def run_shell_command(
 def find_file_with_pattern(pattern: str, file_path: Path | str = Path()) -> list[str]:
     """Find files of the given pattern recursively.
 
-    This is used to find a number files given a globale pattern, i.e. *.spec,
-    *.pf. When *.py is used, it'll ignore out.pf and py_wind.pf files. To find
+    This is used to find a number files given a global pattern, i.e. \*.spec,
+    \*.pf. When \*.py is used, it'll ignore out.pf and py_wind.pf files. To find
     py_wind.pf files, use py_wind.pf as the pattern.
 
     Parameters
     ----------
     pattern : str
-        Patterns to search recursively for, i.e. *.pf, *.spec, tde_std.pf
+        Patterns to search recursively for, i.e. \*.pf, \*.spec, tde_std.pf
     file_path : str [optional]
         The directory to search from, if not specified in the pattern.
 

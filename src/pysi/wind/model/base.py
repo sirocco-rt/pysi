@@ -456,7 +456,7 @@ class WindBase:
     def read_in_wind_cell_spectra(self) -> None:
         """Read in the cell spectra."""
         self._create_empty_parameter_array(["spec_freq", "spec_flux"])
-        spec_table_files = pysi.util.shell.find_file_with_pattern("*xspec.*.txt", self.directory)
+        spec_table_files = pysi.util.shell.find_file_with_pattern("{}*xspec.*.txt".format(self.root), self.directory)
         if len(spec_table_files) == 0:
             return
 
@@ -470,6 +470,7 @@ class WindBase:
             for i, coord_string in enumerate(file_header):
                 coords = numpy.array(coord_string[1:].split("_"), dtype=numpy.int32)
                 # todo(ep): no idea why they have to be separate cases, but should investigate
+                # print (coords, self.n_z, file_array.shape, i)
                 if self.n_z > 1:
                     self.parameters["spec_flux"][coords[0], coords[1]] = file_array[:, i + 1]
                     self.parameters["spec_freq"][coords[0], coords[1]] = file_array[:, 0]
