@@ -3,7 +3,7 @@ from bokeh.plotting import figure
 from bokeh.layouts import row, column
 from bokeh.models import (
     ColumnDataSource, TapTool, HoverTool,
-    LinearColorMapper, ColorBar, Select
+    LinearColorMapper, LogColorMapper, ColorBar, Select
 )
 
 
@@ -71,6 +71,7 @@ def make_document(doc, wind):
         "nscat_es", "nscat_res", "nscat_ff", "nscat_bf",
         "v_l", "v_rot", "v_r"
     ])
+    scale1 = Select(title="Scale:", value="linear", options=["linear", "log"])
 
     pcolor1_source = ColumnDataSource(dict(image=[wind["ne"].T]))
     color_mapper1 = LinearColorMapper(palette="Viridis256")
@@ -82,14 +83,22 @@ def make_document(doc, wind):
 
     def update_pcolor1(attr, old, new):
         data = wind[select1.value]
+
+        if scale1.value == "log":
+            data = np.where(data > 0, np.log10(data), np.nan)
+
         color_mapper1.low = float(np.nanmin(data))
         color_mapper1.high = float(np.nanmax(data))
+
         pcolor1_source.data = dict(image=[data.T])
 
     select1.on_change("value", update_pcolor1)
+    scale1.on_change("value", update_pcolor1)
 
     # ---------------- Ion fractions panel ----------------
     select2 = Select(title="Fraction:", value="H_i01_frac", options=wind.ions_read_in)
+    scale2 = Select(title="Scale:", value="linear", options=["linear", "log"])
+
 
     pcolor2_source = ColumnDataSource(dict(image=[wind["H_i01_frac"].T]))
     color_mapper2 = LinearColorMapper(palette="Viridis256")
@@ -101,12 +110,18 @@ def make_document(doc, wind):
 
     def update_pcolor2(attr, old, new):
         data = wind[select2.value]
+
+        if scale2.value == "log":
+            data = np.where(data > 0, np.log10(data), np.nan)
+
         color_mapper2.low = float(np.nanmin(data))
         color_mapper2.high = float(np.nanmax(data))
+
         pcolor2_source.data = dict(image=[data.T])
 
     select2.on_change("value", update_pcolor2)
+    scale2.on_change("value", update_pcolor2)
 
     # ---------------- Layout ----------------
-    doc.add_root(column(row(p, q), row(column(select1, r1), column(select2, r2))))
+    doc.add_root(column(row(p, q), row(column(select1, scale1, r1), column(select2, scale2, r2))))
     doc.title = "Wind Spectrum Viewer"

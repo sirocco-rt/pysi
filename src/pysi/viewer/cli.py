@@ -4,7 +4,8 @@ from tornado.ioloop import IOLoop
 from pysi.wind import Wind
 
 from .viewer import make_document
-
+import warnings
+warnings.filterwarnings("ignore")
 
 def main():
     parser = argparse.ArgumentParser(description="Launch Wind Spectrum Viewer")
